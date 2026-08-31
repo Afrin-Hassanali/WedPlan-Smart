@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Management | WedPlan Smart</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body class="admin-page">
+
+
+<!-- =====================================================
+     SUCCESS NOTIFICATION
+===================================================== -->
+
+{% if session.get('success_message') %}
+
+<div
+    class="admin-success-notification"
+    id="successNotification">
+
+    <div class="success-icon">
+        ✓
+    </div>
+
+    <div class="success-message">
+
+        <strong>
+            Success
+        </strong>
+
+        <span>
+            {{ session.get('success_message') }}
+        </span>
+
+    </div>
+
+    <button
+        type="button"
+        class="success-close"
+        onclick="closeSuccessNotification()">
+
+        ×
+
+    </button>
+
+</div>
+
+{% set _ = session.pop('success_message', None) %}
+
+{% endif %}
+
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="dashboard-nav">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan<span> Smart</span>
+        </h2>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div class="dashboard-menu">
+
+        <button
+            class="menu-toggle"
+            type="button"
+            onclick="toggleUserMenu()"
+            aria-label="Open menu">
+
+            ☰
+
+        </button>
+
+
+        <div
+            class="dashboard-dropdown"
+            id="userDropdown">
+
+            <p class="menu-greeting">
+
+                Hi,
+                {{ session.get('fullname', 'Admin') }}
+
+            </p>
+
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+
+            <a href="/result">
+                Recommendations
+            </a>
+
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+
+            <a href="/admin">
+                Admin
+            </a>
+
+
+            <a href="/admin/users">
+                Users
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="/logout"
+                class="logout-link">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="admin-main">
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <section class="admin-header">
+
+        <p class="admin-eyebrow">
+            ADMIN CONSOLE
+        </p>
+
+
+        <h1>
+            User Management
+        </h1>
+
+
+        <p class="user-management-description">
+
+            Manage registered WedPlan Smart users
+            and their account status.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         USER STATISTICS
+    ================================================== -->
+
+    <section class="admin-stat-grid">
+
+
+        <!-- TOTAL USERS -->
+
+        <div class="admin-stat-card">
+
+            <p>
+                TOTAL USERS
+            </p>
+
+            <h2>
+                {{ total_users }}
+            </h2>
+
+        </div>
+
+
+        <!-- ACTIVE USERS -->
+
+        <div class="admin-stat-card">
+
+            <p>
+                ACTIVE USERS
+            </p>
+
+            <h2>
+                {{ active_users }}
+            </h2>
+
+        </div>
+
+
+        <!-- INACTIVE USERS -->
+
+        <div class="admin-stat-card">
+
+            <p>
+                INACTIVE USERS
+            </p>
+
+            <h2>
+                {{ inactive_users }}
+            </h2>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         REGISTERED USERS
+    ================================================== -->
+
+    <section class="admin-vendor-section">
+
+
+        <div class="admin-section-heading">
+
+            <div>
+
+                <p class="admin-eyebrow">
+                    DATABASE
+                </p>
+
+                <h2>
+                    Registered Users
+                </h2>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             USER TABLE
+        ================================================== -->
+
+        <div class="admin-table-wrapper">
+
+            <table class="admin-vendor-table">
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            USER
+                        </th>
+
+                        <th>
+                            EMAIL
+                        </th>
+
+                        <th>
+                            PHONE
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            REGISTERED
+                        </th>
+
+                        <th>
+                            ACTION
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                {% for user in users %}
+
+                    <tr>
+
+
+                        <!-- USER -->
+
+                        <td class="vendor-name-cell">
+
+                            {{ user.full_name }}
+
+                        </td>
+
+
+
+                        <!-- EMAIL -->
+
+                        <td>
+
+                            {{ user.email }}
+
+                        </td>
+
+
+
+                        <!-- PHONE -->
+
+                        <td>
+
+                            {% if user.phone %}
+
+                                {{ user.phone }}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- STATUS -->
+
+                        <td>
+
+                            {% if user.is_active %}
+
+                                <span class="user-status active">
+
+                                    <span class="status-dot"></span>
+
+                                    Active
+
+                                </span>
+
+                            {% else %}
+
+                                <span class="user-status inactive">
+
+                                    <span class="status-dot"></span>
+
+                                    Inactive
+
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- REGISTERED -->
+
+                        <td>
+
+                            {% if user.created_at %}
+
+                                {{ user.created_at.strftime('%d %b %Y') }}
+
+                            {% else %}
+
+                                —
+
+                            {% endif %}
+
+                        </td>
+
+
+
+                        <!-- ACTION -->
+
+                        <td>
+
+                            <form
+                                action="/admin/toggle-user/{{ user.user_id }}"
+                                method="POST"
+                                class="user-toggle-form">
+
+
+                                {% if user.is_active %}
+
+                                    <button
+                                        type="button"
+                                        class="admin-user-deactivate-button"
+                                        onclick="openUserModal(this, 'deactivate')">
+
+                                        Deactivate
+
+                                    </button>
+
+                                {% else %}
+
+                                    <button
+                                        type="button"
+                                        class="admin-user-activate-button"
+                                        onclick="openUserModal(this, 'activate')">
+
+                                        Activate
+
+                                    </button>
+
+                                {% endif %}
+
+
+                            </form>
+
+                        </td>
+
+
+                    </tr>
+
+
+                {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="admin-empty">
+
+                            No registered users found.
+
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     USER STATUS CONFIRMATION MODAL
+===================================================== -->
+
+<div
+    class="delete-modal-overlay"
+    id="userModal">
+
+    <div class="delete-modal">
+
+
+        <div class="delete-modal-icon">
+            !
+        </div>
+
+
+        <h3 id="userModalTitle">
+            Change User Status?
+        </h3>
+
+
+        <p id="userModalMessage">
+
+            Are you sure you want to change
+            this user's account status?
+
+        </p>
+
+
+        <div class="delete-modal-actions">
+
+
+            <button
+                type="button"
+                class="delete-cancel-button"
+                onclick="closeUserModal()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="button"
+                class="delete-confirm-button"
+                onclick="confirmUserStatus()"
+                id="userConfirmButton">
+
+                Confirm
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   HAMBURGER MENU
+===================================================== */
+
+function toggleUserMenu() {
+
+    const dropdown =
+        document.getElementById(
+            "userDropdown"
+        );
+
+
+    const button =
+        document.querySelector(
+            ".menu-toggle"
+        );
+
+
+    dropdown.classList.toggle(
+        "show"
+    );
+
+
+    if (
+        dropdown.classList.contains(
+            "show"
+        )
+    ) {
+
+        button.innerHTML = "✕";
+
+    } else {
+
+        button.innerHTML = "☰";
+
+    }
+
+}
+
+
+
+/* =====================================================
+   CLOSE MENU OUTSIDE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const menu =
+            document.querySelector(
+                ".dashboard-menu"
+            );
+
+
+        const dropdown =
+            document.getElementById(
+                "userDropdown"
+            );
+
+
+        const button =
+            document.querySelector(
+                ".menu-toggle"
+            );
+
+
+        if (
+            !menu.contains(
+                event.target
+            )
+        ) {
+
+            dropdown.classList.remove(
+                "show"
+            );
+
+
+            button.innerHTML = "☰";
+
+        }
+
+    }
+);
+
+
+
+/* =====================================================
+   USER STATUS MODAL
+===================================================== */
+
+let userFormToSubmit = null;
+
+
+function openUserModal(
+    button,
+    action
+) {
+
+    userFormToSubmit =
+        button.closest(
+            ".user-toggle-form"
+        );
+
+
+    const modal =
+        document.getElementById(
+            "userModal"
+        );
+
+
+    const title =
+        document.getElementById(
+            "userModalTitle"
+        );
+
+
+    const message =
+        document.getElementById(
+            "userModalMessage"
+        );
+
+
+    const confirmButton =
+        document.getElementById(
+            "userConfirmButton"
+        );
+
+
+    if (
+        action === "deactivate"
+    ) {
+
+        title.innerHTML =
+            "Deactivate User?";
+
+
+        message.innerHTML =
+            "Are you sure you want to deactivate this user? They will not be able to log in.";
+
+
+        confirmButton.innerHTML =
+            "Deactivate";
+
+    } else {
+
+        title.innerHTML =
+            "Activate User?";
+
+
+        message.innerHTML =
+            "Are you sure you want to activate this user?";
+
+
+        confirmButton.innerHTML =
+            "Activate";
+
+    }
+
+
+    modal.classList.add(
+        "show"
+    );
+
+}
+
+
+
+function closeUserModal() {
+
+    const modal =
+        document.getElementById(
+            "userModal"
+        );
+
+
+    modal.classList.remove(
+        "show"
+    );
+
+
+    userFormToSubmit = null;
+
+}
+
+
+
+function confirmUserStatus() {
+
+    if (
+        userFormToSubmit
+    ) {
+
+        userFormToSubmit.submit();
+
+    }
+
+}
+
+
+
+/* =====================================================
+   SUCCESS NOTIFICATION
+===================================================== */
+
+const successNotification =
+    document.getElementById(
+        "successNotification"
+    );
+
+
+if (
+    successNotification
+) {
+
+    setTimeout(
+        function() {
+
+            successNotification.style.opacity =
+                "0";
+
+
+            successNotification.style.transform =
+                "translateX(30px)";
+
+
+            setTimeout(
+                function() {
+
+                    successNotification.remove();
+
+                },
+                300
+            );
+
+        },
+        3500
+    );
+
+}
+
+
+
+function closeSuccessNotification() {
+
+    const notification =
+        document.getElementById(
+            "successNotification"
+        );
+
+
+    if (
+        notification
+    ) {
+
+        notification.style.opacity =
+            "0";
+
+
+        notification.style.transform =
+            "translateX(30px)";
+
+
+        setTimeout(
+            function() {
+
+                notification.remove();
+
+            },
+            300
+        );
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

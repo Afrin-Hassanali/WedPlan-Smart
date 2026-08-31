@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Wedding Package | WedPlan Smart</title>
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}?v=9.0">
+
+</head>
+
+
+<body class="result-page">
+
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+<nav class="dashboard-nav">
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan <span>Smart</span>
+        </h2>
+
+    </div>
+
+
+    <div class="dashboard-menu-wrapper">
+
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+
+        <div
+            class="dashboard-dropdown"
+            id="dashboardDropdown"
+        >
+
+            <p class="menu-greeting">
+                Hi, {{ session.get('fullname', 'User') }}
+            </p>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/wedding-planner">
+                Wedding Planner
+            </a>
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/expenses">
+                Track Expenses
+            </a>
+
+            <a href="/admin">
+                Admin
+            </a>
+
+            <div class="menu-divider"></div>
+
+            <a
+                href="/logout"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<!-- =====================================================
+     MAIN RESULT
+====================================================== -->
+
+<main class="result-main">
+
+
+    <!-- =================================================
+         ERROR RESULT
+    ================================================== -->
+
+    {% if error %}
+
+
+        <section class="result-header">
+
+            <p class="result-label">
+                AI WEDDING PLANNER
+            </p>
+
+
+            <h1 class="result-title">
+                Package Could Not Be Created
+            </h1>
+
+
+            <p class="result-subtitle">
+                {{ error }}
+            </p>
+
+        </section>
+
+
+        <section class="package-section">
+
+
+            <!-- PACKAGE OVER BUDGET -->
+
+            {% if error_reason == "PACKAGE_OVER_BUDGET" %}
+
+                <div class="budget-alert">
+
+                    <div class="budget-alert-icon">
+                        ⚠️
+                    </div>
+
+
+                    <div class="budget-alert-content">
+
+                        <h2>
+                            Your selected package exceeds your budget
+                        </h2>
+
+
+                        <p>
+                            We found suitable vendors for all your
+                            selected services, but the complete package
+                            cannot be created within your current budget.
+                        </p>
+
+
+                        <div class="budget-summary-grid">
+
+                            <div class="budget-summary-card">
+
+                                <span>
+                                    Your Budget
+                                </span>
+
+                                <strong>
+                                    LKR
+                                    {{ "{:,.0f}".format(budget) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="budget-summary-card">
+
+                                <span>
+                                    Cheapest Complete Package
+                                </span>
+
+                                <strong>
+                                    LKR
+                                    {{ "{:,.0f}".format(
+                                        cheapest_package_cost
+                                    ) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="budget-summary-card">
+
+                                <span>
+                                    Additional Amount Required
+                                </span>
+
+                                <strong class="shortfall-value">
+                                    LKR
+                                    {{ "{:,.0f}".format(
+                                        shortfall
+                                    ) }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if suggestions %}
+
+                            <div class="suggestion-box">
+
+                                <h3>
+                                    💡 What you can try
+                                </h3>
+
+                                <ul>
+
+                                    {% for suggestion in suggestions %}
+
+                                        <li>
+                                            {{ suggestion }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="result-actions">
+
+                            <a
+                                href="/dashboard"
+                                class="edit-brief-btn"
+                            >
+                                Edit My Wedding Plan
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            <!-- SERVICE UNAVAILABLE -->
+
+            {% elif error_reason == "SERVICE_UNAVAILABLE" %}
+
+                <div class="budget-alert">
+
+                    <div class="budget-alert-icon">
+                        ⚠️
+                    </div>
+
+
+                    <div class="budget-alert-content">
+
+                        <h2>
+                            Some selected services are unavailable
+                        </h2>
+
+
+                        <p>
+                            We could not find suitable vendors
+                            matching your current wedding requirements
+                            for:
+                        </p>
+
+
+                        {% if missing_services %}
+
+                            <ul class="missing-services-list">
+
+                                {% for service in missing_services %}
+
+                                    <li>
+                                        {{ service }}
+                                    </li>
+
+                                {% endfor %}
+
+                            </ul>
+
+                        {% endif %}
+
+
+                        {% if suggestions %}
+
+                            <div class="suggestion-box">
+
+                                <h3>
+                                    💡 What you can try
+                                </h3>
+
+                                <ul>
+
+                                    {% for suggestion in suggestions %}
+
+                                        <li>
+                                            {{ suggestion }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="result-actions">
+
+                            <a
+                                href="/dashboard"
+                                class="edit-brief-btn"
+                            >
+                                Edit My Wedding Plan
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            <!-- GENERAL FAILURE -->
+
+            {% else %}
+
+                <div class="budget-alert">
+
+                    <div class="budget-alert-icon">
+                        ⚠️
+                    </div>
+
+
+                    <div class="budget-alert-content">
+
+                        <h2>
+                            We couldn't create your package
+                        </h2>
+
+
+                        <p>
+                            {{ error }}
+                        </p>
+
+
+                        {% if suggestions %}
+
+                            <div class="suggestion-box">
+
+                                <h3>
+                                    💡 What you can try
+                                </h3>
+
+                                <ul>
+
+                                    {% for suggestion in suggestions %}
+
+                                        <li>
+                                            {{ suggestion }}
+                                        </li>
+
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        <div class="result-actions">
+
+                            <a
+                                href="/dashboard"
+                                class="edit-brief-btn"
+                            >
+                                Edit My Wedding Plan
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+    <!-- =================================================
+         SUCCESSFUL RESULT
+    ================================================== -->
+
+    {% else %}
+
+
+        <!-- PAGE HEADER -->
+
+        <section class="result-header">
+
+            <p class="result-label">
+                AI WEDDING PLANNER
+            </p>
+
+
+            <h1 class="result-title">
+                Your Optimized Package
+            </h1>
+
+
+            <p class="result-subtitle">
+
+                LKR
+                {{ "{:,.0f}".format(budget) }}
+
+                budget ·
+
+                {{ guest_count }}
+
+                guests ·
+
+                {{ location }}
+
+            </p>
+
+
+            <div class="result-actions">
+
+                <a
+                    href="/dashboard"
+                    class="edit-brief-btn"
+                >
+                    Edit Brief
+                </a>
+
+
+                <a
+                    href="/analytics"
+                    class="analytics-btn"
+                >
+                    View Analytics →
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================== -->
+
+        <section class="result-summary-grid">
+
+
+            <!-- TOTAL COST -->
+
+            <div class="summary-card dark">
+
+                <div class="summary-label">
+                    Total Estimated Cost
+                </div>
+
+
+                <div class="summary-value">
+
+                    LKR
+                    {{ "{:,.0f}".format(total_cost) }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- REMAINING BUDGET -->
+
+            <div class="summary-card gold">
+
+                <div class="summary-label">
+                    Remaining Budget
+                </div>
+
+
+                <div class="summary-value">
+
+                    LKR
+                    {{ "{:,.0f}".format(
+                        remaining_budget
+                    ) }}
+
+                </div>
+
+            </div>
+
+
+
+            <!-- WITHIN BUDGET -->
+
+            <div class="summary-card gold">
+
+                <div class="summary-label">
+                    Within Budget
+                </div>
+
+
+                <div class="summary-value">
+
+                    {% if within_budget %}
+
+                        Yes ✓
+
+                    {% else %}
+
+                        No
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PACKAGE SUMMARY
+        ================================================== -->
+
+        <section class="package-section">
+
+
+            <h2 class="package-title">
+                Wedding Package Summary
+            </h2>
+
+
+            <p class="package-description">
+
+                AI-selected vendors based on your budget,
+                guest count and preferred location.
+
+            </p>
+
+
+
+            <!-- =================================================
+                 SELECTED VENDORS
+            ================================================== -->
+
+            {% if wedding_package %}
+
+
+                <div class="vendor-package-grid">
+
+
+                    {% for item in wedding_package %}
+
+
+                        <article class="vendor-package-card">
+
+
+                            <!-- VENDOR IMAGE -->
+
+                            {% if item.category == "Venue" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Venue.png'
+                                    ) }}"
+                                    alt="Wedding venue"
+                                >
+
+
+                            {% elif item.category == "Catering" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Catering.png'
+                                    ) }}"
+                                    alt="Wedding catering"
+                                >
+
+
+                            {% elif item.category == "Photography" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Photography.png'
+                                    ) }}"
+                                    alt="Wedding photography"
+                                >
+
+
+                            {% elif item.category == "Videography" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Videography.png'
+                                    ) }}"
+                                    alt="Wedding videography"
+                                >
+
+
+                            {% elif item.category == "Decoration" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'static',
+                                        filename='images/Decoration.png'
+                                    ) }}"
+                                    alt="Wedding decoration"
+                                >
+
+                            {% endif %}
+
+
+
+                            <!-- CARD CONTENT -->
+
+                            <div class="vendor-card-content">
+
+
+                                <!-- TOP -->
+
+                                <div class="vendor-card-top">
+
+                                    <div>
+
+                                        <p class="vendor-category">
+                                            {{ item.category }}
+                                        </p>
+
+
+                                        <h3 class="vendor-name">
+                                            {{ item.vendor_name }}
+                                        </h3>
+
+                                    </div>
+
+
+                                    <!-- AI MATCH -->
+
+                                    <div class="match-badge">
+
+                                        {{ "%.0f"|format(
+                                            item.suitability_score
+                                        ) }}% Match
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <!-- DESCRIPTION -->
+
+                                <p class="vendor-description">
+
+                                    AI-recommended
+                                    {{ item.category.lower() }}
+                                    based on your wedding requirements.
+
+                                </p>
+
+
+
+                                <!-- BOTTOM -->
+
+                                <div class="vendor-card-bottom">
+
+
+                                    <!-- PRICE -->
+
+                                    <span class="vendor-price">
+
+                                        LKR
+                                        {{ "{:,.0f}".format(
+                                            item.estimated_cost
+                                        ) }}
+
+                                    </span>
+
+
+
+                                    <!-- EXTRA INFORMATION -->
+
+                                    {% if item.category == "Catering" %}
+
+                                        <span class="vendor-capacity">
+
+                                            {{ guest_count }}
+                                            guests
+
+                                        </span>
+
+
+                                    {% elif item.category == "Venue" %}
+
+                                        <span class="vendor-capacity">
+
+                                            Cap
+                                            {{ item.guest_capacity }}
+
+                                        </span>
+
+
+                                    {% else %}
+
+                                        <span class="vendor-capacity">
+
+                                            Rating
+                                            {{ item.rating }} ★
+
+                                        </span>
+
+                                    {% endif %}
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </article>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            {% else %}
+
+
+                <!-- NO PACKAGE -->
+
+                <div class="summary-card gold">
+
+                    <div class="summary-label">
+                        Recommendation Status
+                    </div>
+
+
+                    <div class="summary-value">
+                        No suitable package was found.
+                    </div>
+
+                </div>
+
+
+            {% endif %}
+
+
+
+            <!-- =================================================
+                 ALL VENDOR RECOMMENDATIONS
+            ================================================== -->
+
+            {% if recommendations %}
+
+
+                <section class="all-recommendations">
+
+
+                    <h2 class="recommendations-title">
+                        All Vendor Recommendations
+                    </h2>
+
+
+                    <p class="recommendations-subtitle">
+
+                        AI-selected vendors ranked by
+                        suitability score.
+
+                    </p>
+
+
+
+                    <div class="recommendations-table-wrapper">
+
+
+                        <table class="recommendations-table">
+
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        VENDOR
+                                    </th>
+
+                                    <th>
+                                        CATEGORY
+                                    </th>
+
+                                    <th>
+                                        LOCATION
+                                    </th>
+
+                                    <th>
+                                        PRICE
+                                    </th>
+
+                                    <th>
+                                        AI MATCH
+                                    </th>
+
+                                    <th>
+                                        RATING
+                                    </th>
+
+                                    <th>
+                                        CAPACITY
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+
+                            <tbody>
+
+
+                                {% for vendor in recommendations %}
+
+
+                                    <tr>
+
+
+                                        <td>
+                                            {{ vendor.vendor_name }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ vendor.category }}
+                                        </td>
+
+
+                                        <td>
+                                            {{ vendor.location }}
+                                        </td>
+
+
+                                        <td>
+
+                                            LKR
+
+                                            {{ "{:,.0f}".format(
+                                                vendor.estimated_cost
+                                                if vendor.estimated_cost is not none
+                                                else vendor.price_lkr
+                                            ) }}
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ "%.0f"|format(
+                                                vendor.suitability_score
+                                            ) }}%
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {{ vendor.rating }} ★
+
+                                        </td>
+
+
+                                        <td>
+
+                                            {% if vendor.guest_capacity %}
+
+                                                {{ vendor.guest_capacity }}
+
+                                            {% else %}
+
+                                                —
+
+                                            {% endif %}
+
+                                        </td>
+
+
+                                    </tr>
+
+
+                                {% endfor %}
+
+
+                            </tbody>
+
+
+                        </table>
+
+
+                    </div>
+
+
+                </section>
+
+
+            {% endif %}
+
+
+        </section>
+
+
+    {% endif %}
+
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+
+            <p class="footer-description">
+
+                Sri Lanka's AI-powered wedding budget and
+                vendor recommendation platform. Built to
+                make grand celebrations achievable,
+                within budget.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- QUICK LINKS -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/#features">
+                Features
+            </a>
+
+
+            <a href="/#how-it-works">
+                How it works
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTACT -->
+
+        <div class="footer-column">
+
+            <h3>
+                CONTACT
+            </h3>
+
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- COPYRIGHT -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     MENU JAVASCRIPT
+====================================================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle = document.getElementById("menuToggle");
+    const dashboardDropdown =
+        document.getElementById("dashboardDropdown");
+
+    if (!menuToggle || !dashboardDropdown) {
+        console.log("Navbar elements not found.");
+        return;
+    }
+
+    menuToggle.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const isOpen =
+            dashboardDropdown.classList.toggle("show");
+
+        menuToggle.classList.toggle("active", isOpen);
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+    });
+
+
+    /* Close when clicking outside */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !dashboardDropdown.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
+            dashboardDropdown.classList.remove("show");
+            menuToggle.classList.remove("active");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+    });
+
+
+    /* Close after selecting a link */
+
+    dashboardDropdown
+        .querySelectorAll("a")
+        .forEach(function (link) {
+
+            link.addEventListener("click", function () {
+
+                dashboardDropdown.classList.remove("show");
+                menuToggle.classList.remove("active");
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+            });
+
+        });
+
+});
+</script>
+
+<!-- =====================================================
+     MAIN JS
+====================================================== -->
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/main.js'
+    ) }}"
+>
+</script>
+
+
+</body>
+
+</html>

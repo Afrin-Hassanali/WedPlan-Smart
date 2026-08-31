@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Tracking | WedPlan Smart</title>
+
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- MAIN CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}?v=20"
+    >
+</head>
+
+
+<body class="expense-page">
+
+<!-- =====================================================
+     NAVBAR
+====================================================== -->
+
+<nav class="expense-navbar">
+
+    <!-- LOGO -->
+    <div class="expense-logo">
+
+        <div class="expense-logo-circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan <span>Smart</span>
+        </h2>
+
+    </div>
+
+
+    <!-- MENU -->
+    <div class="expense-menu-wrapper">
+
+        <button
+            type="button"
+            class="expense-menu-toggle"
+            id="expenseMenuToggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+
+        <div
+            class="expense-dropdown"
+            id="expenseDropdown"
+        >
+
+            <p class="expense-menu-greeting">
+                Hi, {{ session.get('fullname', 'User') }}
+            </p>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+            <a href="/wedding-planner">
+                Wedding Planner
+            </a>
+
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+            <a href="/expenses">
+                Track Expenses
+            </a>
+
+            <a href="/admin">
+                Admin
+            </a>
+
+            <div class="expense-menu-divider"></div>
+
+            <a
+                href="/logout"
+                class="expense-logout"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =====================================================
+     MAIN CONTENT
+====================================================== -->
+
+<main class="expense-main">
+
+    <!-- PAGE HEADER -->
+
+    <section class="expense-header">
+
+        <p class="expense-label">
+            EXPENSE TRACKER
+        </p>
+
+        <h1>
+            Every Rupee, Accounted
+        </h1>
+
+        <p class="expense-subtitle">
+            Record actual wedding expenses and see how they
+            track against your budget.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         SUMMARY CARDS
+    ================================================== -->
+
+    <section class="expense-summary">
+
+        <!-- TOTAL SPENT -->
+
+        <div class="expense-stat-card expense-stat-dark">
+
+            <p>
+                TOTAL SPENT
+            </p>
+
+            <h2>
+                LKR {{ "{:,.0f}".format(total_actual) }}
+            </h2>
+
+        </div>
+
+
+        <!-- WEDDING BUDGET -->
+
+        <div class="expense-stat-card expense-stat-gold">
+
+            <p>
+                WEDDING BUDGET
+            </p>
+
+            <h2>
+                LKR {{ "{:,.0f}".format(budget) }}
+            </h2>
+
+        </div>
+
+
+        <!-- REMAINING -->
+
+        <div class="expense-stat-card">
+
+            <p>
+                REMAINING BUDGET
+            </p>
+
+            <h2>
+                LKR {{ "{:,.0f}".format(remaining) }}
+            </h2>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         BUDGET USAGE
+    ================================================== -->
+
+    <section class="budget-progress-card">
+
+        <div class="budget-progress-top">
+
+            <strong>
+                Budget usage — LKR {{ "{:,.0f}".format(budget) }}
+            </strong>
+
+            {% if budget > 0 %}
+
+                <span>
+                    {{ ((total_actual / budget) * 100)|round(0) }}%
+                </span>
+
+            {% else %}
+
+                <span>0%</span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="budget-progress">
+
+            <div
+                class="budget-progress-fill"
+                style="width:
+                {% if budget > 0 %}
+                    {{ [((total_actual / budget) * 100), 100]|min }}%
+                {% else %}
+                    0%
+                {% endif %};
+                "
+            ></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         ADD EXPENSE
+    ================================================== -->
+
+    <section class="expense-form-card">
+
+        <div class="expense-section-heading">
+
+            <h2>
+                Add Expense
+            </h2>
+
+            <p>
+                Record an expense to keep your wedding budget
+                up to date.
+            </p>
+
+        </div>
+
+
+        <form
+         action="{{ url_for('add_expense') }}"
+         method="POST"
+         class="expense-form"
+        >
+
+            <!-- ITEM -->
+
+            <div class="expense-field">
+
+                <label for="description">
+                    ITEM
+                </label>
+
+                <input
+                    type="text"
+                    id="description"
+                    name="description"
+                    placeholder="e.g. Venue advance payment"
+                >
+
+            </div>
+
+
+            <!-- CATEGORY -->
+
+            <div class="expense-field">
+
+                <label for="category">
+                    CATEGORY
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                    required
+                >
+
+                    <option value="">
+                        Select Category
+                    </option>
+
+                    <option value="Venue">
+                        Venue
+                    </option>
+
+                    <option value="Catering">
+                        Catering
+                    </option>
+
+                    <option value="Photography">
+                        Photography
+                    </option>
+
+                    <option value="Videography">
+                        Videography
+                    </option>
+
+                    <option value="Decoration">
+                        Decoration
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- PLANNED -->
+
+            <div class="expense-field">
+
+                <label for="planned_amount">
+                    PLANNED AMOUNT (LKR)
+                </label>
+
+                <input
+                    type="number"
+                    id="planned_amount"
+                    name="planned_amount"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter planned amount"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ACTUAL -->
+
+            <div class="expense-field">
+
+                <label for="actual_amount">
+                    ACTUAL AMOUNT (LKR)
+                </label>
+
+                <input
+                    type="number"
+                    id="actual_amount"
+                    name="actual_amount"
+                    min="0"
+                    step="0.01"
+                    placeholder="Enter actual amount"
+                    required
+                >
+
+            </div>
+
+
+            <!-- PAYMENT STATUS -->
+
+            <div class="expense-field">
+
+                <label for="expense_status">
+                    PAYMENT STATUS
+                </label>
+
+                <select
+                    id="expense_status"
+                    name="expense_status"
+                >
+
+                    <option value="Paid">
+                        Paid
+                    </option>
+
+                    <option value="Pending">
+                        Pending
+                    </option>
+
+                    <option value="Partially Paid">
+                        Partially Paid
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <div class="expense-submit-area">
+
+                <button
+                    type="submit"
+                    class="expense-submit-btn"
+                >
+                    Add Expense
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =================================================
+         EXPENSE LIST
+    ================================================== -->
+
+    <section class="expense-list-card">
+
+        <div class="expense-section-heading">
+
+            <h2>
+                My Expenses
+            </h2>
+
+            <p>
+                All expenses recorded for your current wedding plan.
+            </p>
+
+        </div>
+
+
+        <div class="expense-table-wrapper">
+
+            <table class="expense-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            CATEGORY
+                        </th>
+
+                        <th>
+                            DESCRIPTION
+                        </th>
+
+                        <th>
+                            PLANNED
+                        </th>
+
+                        <th>
+                            ACTUAL
+                        </th>
+
+                        <th>
+                            STATUS
+                        </th>
+
+                        <th>
+                            ACTION
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for expense in expenses %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ expense.category }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ expense.description or "-" }}
+                        </td>
+
+                        <td>
+                            LKR {{ "{:,.0f}".format(expense.planned_amount or 0) }}
+                        </td>
+
+                        <td>
+                            LKR {{ "{:,.0f}".format(expense.actual_amount or 0) }}
+                        </td>
+
+                        <td>
+
+                            <span class="expense-status
+                                {% if expense.expense_status == 'Paid' %}
+                                    status-paid
+                                {% elif expense.expense_status == 'Pending' %}
+                                    status-pending
+                                {% else %}
+                                    status-partial
+                                {% endif %}
+                            ">
+
+                                {{ expense.expense_status }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <form
+                                action="{{ url_for('delete_expense', expense_id=expense.expense_id) }}"
+                                method="POST"
+                                onsubmit="return confirm('Delete this expense?');"
+                            >
+
+                                <button
+                                    type="submit"
+                                    class="expense-delete-btn"
+                                >
+                                    Delete
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td
+                            colspan="6"
+                            class="expense-empty"
+                        >
+                            No expenses recorded yet.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+    <!-- =================================================
+         BUDGET STATUS
+    ================================================== -->
+
+    {% if remaining < 0 %}
+
+    <section class="expense-budget-alert expense-budget-danger">
+
+        <div>
+
+            <h3>
+                ⚠ Budget Exceeded
+            </h3>
+
+            <p>
+                You are over your wedding budget by
+                <strong>
+                    LKR {{ "{:,.0f}".format(remaining|abs) }}
+                </strong>.
+            </p>
+
+        </div>
+
+    </section>
+
+    {% else %}
+
+    <section class="expense-budget-alert expense-budget-success">
+
+        <div>
+
+            <h3>
+                ✓ Budget Under Control
+            </h3>
+
+            <p>
+                You still have
+                <strong>
+                    LKR {{ "{:,.0f}".format(remaining) }}
+                </strong>
+                available.
+            </p>
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- BACK TO DASHBOARD -->
+
+    <div class="expense-back">
+
+        <a href="{{ url_for('dashboard') }}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+====================================================== -->
+
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+
+            <p class="footer-description">
+
+                Sri Lanka's AI-powered wedding budget and
+                vendor recommendation platform. Built to
+                make grand celebrations achievable,
+                within budget.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- QUICK LINKS -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+
+            <a href="/">
+                Home
+            </a>
+
+
+            <a href="/#features">
+                Features
+            </a>
+
+
+            <a href="/#how-it-works">
+                How it works
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTACT -->
+
+        <div class="footer-column">
+
+            <h3>
+                CONTACT
+            </h3>
+
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- COPYRIGHT -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     MENU JAVASCRIPT
+====================================================== -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle =
+        document.getElementById("expenseMenuToggle");
+
+    const dropdown =
+        document.getElementById("expenseDropdown");
+
+    if (!menuToggle || !dropdown) {
+        return;
+    }
+
+    menuToggle.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        dropdown.classList.toggle("show");
+
+        const isOpen =
+            dropdown.classList.contains("show");
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+    });
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !dropdown.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
+
+            dropdown.classList.remove("show");
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+    });
+
+});
+</script>
+
+
+</body>
+</html>

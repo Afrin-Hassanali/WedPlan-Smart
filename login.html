@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Login | WedPlan Smart</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}?v=6.0"
+    >
+
+</head>
+
+
+<body class="login-page">
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="auth-nav login-auth-nav">
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan <span>Smart</span>
+        </h2>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     LOGIN SECTION
+===================================================== -->
+
+<section class="modern-login">
+
+
+    <!-- =================================================
+         LEFT IMAGE
+    ================================================== -->
+
+    <div class="login-image">
+
+        <img
+            src="{{ url_for('static', filename='images/Login_wedding.png') }}"
+            alt="Elegant Wedding"
+        >
+
+
+        <div class="login-image-text">
+
+            <p>
+                PLAN BEAUTIFULLY
+            </p>
+
+            <h2>
+                Your perfect wedding begins here.
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RIGHT CONTENT
+    ================================================== -->
+
+    <div class="login-content">
+
+        <div class="login-form-wrapper">
+
+
+            <!-- =================================================
+                 LABEL
+            ================================================== -->
+
+            <p class="login-label">
+                WELCOME BACK
+            </p>
+
+
+
+            <!-- =================================================
+                 TITLE
+            ================================================== -->
+
+            <h1>
+                Continue Your Wedding Journey
+            </h1>
+
+
+
+            <!-- =================================================
+                 SUBTITLE
+            ================================================== -->
+
+            <p class="login-subtitle">
+                Log in to continue planning your perfect celebration.
+            </p>
+
+
+
+            <!-- =================================================
+                 LOGIN TYPE
+            ================================================== -->
+
+            <div class="login-type-switch">
+
+                <button
+                    type="button"
+                    id="userTab"
+                    class="login-type-btn active"
+                    onclick="selectLoginType('user')"
+                >
+                    Couple / User
+                </button>
+
+
+                <button
+                    type="button"
+                    id="adminTab"
+                    class="login-type-btn"
+                    onclick="selectLoginType('admin')"
+                >
+                    Admin
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <form
+                action="/login"
+                method="POST"
+            >
+
+
+                <!-- =================================================
+                     LOGIN TYPE
+                ================================================== -->
+
+                <input
+                    type="hidden"
+                    id="login_type"
+                    name="login_type"
+                    value="user"
+                >
+
+
+
+                <!-- =================================================
+                     EMAIL
+                ================================================== -->
+
+                <div class="input-group">
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder=" "
+                        required
+                        autocomplete="email"
+                        pattern="[a-z0-9._%+-]+@gmail\.com"
+                        title="Please enter a valid Gmail address ending with @gmail.com"
+                        oninput="this.value = this.value.toLowerCase()"
+                    >
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PASSWORD
+                ================================================== -->
+
+                <div class="input-group password-group">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder=" "
+                        required
+                        autocomplete="current-password"
+                    >
+
+                    <label for="password">
+                        Password
+                    </label>
+
+
+                    <!-- SINGLE PASSWORD TOGGLE -->
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="passwordToggle"
+                        onclick="togglePassword()"
+                        aria-label="Show password"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     OPTIONS
+                ================================================== -->
+
+                <div class="login-options">
+
+
+                    <!-- REMEMBER ME -->
+
+                    <label class="remember-me">
+
+                        <input
+                            type="checkbox"
+                            name="remember"
+                        >
+
+                        <span>
+                            Remember me
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- FORGOT PASSWORD -->
+
+                    <a href="/forgot-password"
+   onclick="this.href='/forgot-password?email=' + encodeURIComponent(document.getElementById('email').value)">
+    Forgot Password?
+</a>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     LOGIN BUTTON
+                ================================================== -->
+
+                <button
+                    type="submit"
+                    class="modern-login-btn"
+                >
+                    Login
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================================
+                 CREATE ACCOUNT
+            ================================================== -->
+
+            <p class="create-account-text">
+
+                New to WedPlan Smart?
+
+                <a href="/register">
+                    Create Account
+                </a>
+
+            </p>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <!-- =================================================
+             BRAND
+        ================================================== -->
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+
+            <p class="footer-description">
+
+                Sri Lanka's AI-powered wedding budget and vendor
+                recommendation platform. Built to make grand
+                celebrations achievable, within budget.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUICK LINKS
+        ================================================== -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+
+            <a href="/#how-it-works">
+                How it works
+            </a>
+
+
+            <a href="/#features">
+                Features
+            </a>
+
+
+            <a href="/#contact">
+                Contact
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CONTACT
+        ================================================== -->
+
+        <div
+            class="footer-column"
+            id="contact"
+        >
+
+            <h3>
+                CONTACT
+            </h3>
+
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         COPYRIGHT
+    ================================================== -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   LOGIN TYPE SWITCH
+===================================================== */
+
+function selectLoginType(type) {
+
+    const loginType =
+        document.getElementById("login_type");
+
+    const userTab =
+        document.getElementById("userTab");
+
+    const adminTab =
+        document.getElementById("adminTab");
+
+
+    loginType.value = type;
+
+
+    if (type === "user") {
+
+        userTab.classList.add("active");
+
+        adminTab.classList.remove("active");
+
+    }
+
+    else {
+
+        adminTab.classList.add("active");
+
+        userTab.classList.remove("active");
+
+    }
+
+}
+
+
+
+/* =====================================================
+   PASSWORD SHOW / HIDE
+===================================================== */
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const toggle =
+        document.getElementById("passwordToggle");
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        toggle.textContent = "🙈";
+
+        toggle.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
+
+    }
+
+    else {
+
+        password.type = "password";
+
+        toggle.textContent = "👁";
+
+        toggle.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

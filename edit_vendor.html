@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Vendor | WedPlan Smart</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<body class="admin-page">
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="dashboard-nav">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan<span> Smart</span>
+        </h2>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div class="dashboard-menu">
+
+        <button
+            class="menu-toggle"
+            type="button"
+            onclick="toggleEditMenu()"
+            aria-label="Open menu">
+
+            ☰
+
+        </button>
+
+
+        <div
+            class="dashboard-dropdown"
+            id="editDropdown">
+
+            <p class="menu-greeting">
+
+                Hi,
+                {{ session.get('fullname', 'Admin') }}
+
+            </p>
+
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+
+            <a href="/result">
+                Recommendations
+            </a>
+
+
+            <a href="/analytics">
+                Analytics
+            </a>
+
+
+            <a href="/admin">
+                Admin
+            </a>
+
+
+            <div class="menu-divider"></div>
+
+
+            <a
+                href="/logout"
+                class="logout-link">
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CONTENT
+===================================================== -->
+
+<main class="admin-main">
+
+
+    <!-- HEADER -->
+
+    <section class="admin-header">
+
+        <p class="admin-eyebrow">
+            ADMIN CONSOLE
+        </p>
+
+
+        <h1>
+            Edit Vendor
+        </h1>
+
+
+        <p class="edit-vendor-description">
+            Update the vendor information below.
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         EDIT FORM
+    ================================================== -->
+
+    <section class="admin-form-card">
+
+
+        <h2>
+            Vendor Details
+        </h2>
+
+
+        <form
+            action="/admin/edit-vendor/{{ vendor.vendor_id }}"
+            method="POST"
+            class="admin-vendor-form">
+
+
+            <!-- =========================
+                 VENDOR NAME
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="vendor_name">
+                    VENDOR NAME
+                </label>
+
+
+                <input
+                    type="text"
+                    id="vendor_name"
+                    name="vendor_name"
+                    value="{{ vendor.vendor_name }}"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CATEGORY
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="category">
+                    CATEGORY
+                </label>
+
+
+                <select
+                    id="category"
+                    name="category"
+                    required>
+
+
+                    <option
+                        value="Venue"
+                        {% if vendor.category == 'Venue' %}
+                            selected
+                        {% endif %}>
+
+                        Venue
+
+                    </option>
+
+
+                    <option
+                        value="Catering"
+                        {% if vendor.category == 'Catering' %}
+                            selected
+                        {% endif %}>
+
+                        Catering
+
+                    </option>
+
+
+                    <option
+                        value="Photography"
+                        {% if vendor.category == 'Photography' %}
+                            selected
+                        {% endif %}>
+
+                        Photography
+
+                    </option>
+
+
+                    <option
+                        value="Videography"
+                        {% if vendor.category == 'Videography' %}
+                            selected
+                        {% endif %}>
+
+                        Videography
+
+                    </option>
+
+
+                    <option
+                        value="Decoration"
+                        {% if vendor.category == 'Decoration' %}
+                            selected
+                        {% endif %}>
+
+                        Decoration
+
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =========================
+                 LOCATION
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="location">
+                    LOCATION
+                </label>
+
+
+                <select
+                    id="location"
+                    name="location"
+                    required>
+
+
+                    <option
+                        value="Colombo"
+                        {% if vendor.location == 'Colombo' %}
+                            selected
+                        {% endif %}>
+
+                        Colombo
+
+                    </option>
+
+
+                    <option
+                        value="Kandy"
+                        {% if vendor.location == 'Kandy' %}
+                            selected
+                        {% endif %}>
+
+                        Kandy
+
+                    </option>
+
+
+                    <option
+                        value="Galle"
+                        {% if vendor.location == 'Galle' %}
+                            selected
+                        {% endif %}>
+
+                        Galle
+
+                    </option>
+
+
+                    <option
+                        value="Negombo"
+                        {% if vendor.location == 'Negombo' %}
+                            selected
+                        {% endif %}>
+
+                        Negombo
+
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PRICE
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="price_lkr">
+                    PRICE (LKR)
+                </label>
+
+
+                <input
+                    type="number"
+                    id="price_lkr"
+                    name="price_lkr"
+                    value="{{ vendor.price_lkr }}"
+                    min="0"
+                    step="0.01"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 PRICE BASIS
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="price_basis">
+                    PRICE BASIS
+                </label>
+
+
+                <select
+                    id="price_basis"
+                    name="price_basis">
+
+
+                    <option
+                        value="package"
+                        {% if vendor.price_basis == 'package' %}
+                            selected
+                        {% endif %}>
+
+                        Package
+
+                    </option>
+
+
+                    <option
+                        value="per_guest"
+                        {% if vendor.price_basis == 'per_guest' %}
+                            selected
+                        {% endif %}>
+
+                        Per Guest
+
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =========================
+                 RATING
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="rating">
+                    RATING (0–5)
+                </label>
+
+
+                <input
+                    type="number"
+                    id="rating"
+                    name="rating"
+                    value="{{ vendor.rating }}"
+                    min="0"
+                    max="5"
+                    step="0.1"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 CAPACITY
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="guest_capacity">
+                    CAPACITY
+                </label>
+
+
+                <input
+                    type="number"
+                    id="guest_capacity"
+                    name="guest_capacity"
+                    value="{{ vendor.guest_capacity }}"
+                    min="0"
+                    required>
+
+            </div>
+
+
+
+            <!-- =========================
+                 WEDDING STYLE
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="wedding_style">
+                    WEDDING STYLE
+                </label>
+
+
+                <select
+                    id="wedding_style"
+                    name="wedding_style">
+
+
+                    <option
+                        value=""
+                        {% if not vendor.wedding_style %}
+                            selected
+                        {% endif %}>
+
+                        Select Style
+
+                    </option>
+
+
+                    <option
+                        value="Luxury"
+                        {% if vendor.wedding_style == 'Luxury' %}
+                            selected
+                        {% endif %}>
+
+                        Luxury
+
+                    </option>
+
+
+                    <option
+                        value="Modern"
+                        {% if vendor.wedding_style == 'Modern' %}
+                            selected
+                        {% endif %}>
+
+                        Modern
+
+                    </option>
+
+
+                    <option
+                        value="Traditional"
+                        {% if vendor.wedding_style == 'Traditional' %}
+                            selected
+                        {% endif %}>
+
+                        Traditional
+
+                    </option>
+
+
+                    <option
+                        value="Garden"
+                        {% if vendor.wedding_style == 'Garden' %}
+                            selected
+                        {% endif %}>
+
+                        Garden
+
+                    </option>
+
+
+                    <option
+                        value="Beach"
+                        {% if vendor.wedding_style == 'Beach' %}
+                            selected
+                        {% endif %}>
+
+                        Beach
+
+                    </option>
+
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =========================
+                 DESCRIPTION
+            ========================== -->
+
+            <div class="admin-form-group">
+
+                <label for="service_features">
+                    DESCRIPTION
+                </label>
+
+
+                <textarea
+                    id="service_features"
+                    name="service_features"
+                    rows="4"
+                    placeholder="Describe the vendor's services">{{ vendor.service_features or '' }}</textarea>
+
+            </div>
+
+
+
+            <!-- =========================
+                 BUTTONS
+            ========================== -->
+
+            <div class="edit-vendor-actions">
+
+
+                <a
+                    href="/admin"
+                    class="edit-cancel-button">
+
+                    Cancel
+
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="admin-add-button">
+
+                    Save Changes
+
+                </button>
+
+
+            </div>
+
+
+        </form>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     MENU JAVASCRIPT
+===================================================== -->
+
+<script>
+
+function toggleEditMenu() {
+
+    const dropdown =
+        document.getElementById("editDropdown");
+
+    const button =
+        document.querySelector(".menu-toggle");
+
+
+    dropdown.classList.toggle("show");
+
+
+    if (
+        dropdown.classList.contains("show")
+    ) {
+
+        button.innerHTML = "✕";
+
+    } else {
+
+        button.innerHTML = "☰";
+
+    }
+
+}
+
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const menu =
+            document.querySelector(
+                ".dashboard-menu"
+            );
+
+        const dropdown =
+            document.getElementById(
+                "editDropdown"
+            );
+
+        const button =
+            document.querySelector(
+                ".menu-toggle"
+            );
+
+
+        if (
+            !menu.contains(event.target)
+        ) {
+
+            dropdown.classList.remove(
+                "show"
+            );
+
+            button.innerHTML = "☰";
+
+        }
+
+    }
+);
+
+</script>
+
+
+</body>
+
+</html>

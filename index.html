@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>WedPlan Smart</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONTS
+    ====================================================== -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
+
+
+    <!-- =====================================================
+         MAIN CSS
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<body class="home-page">
+
+<nav class="site-navbar">
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan<span> Smart</span>
+        </h2>
+
+    </div>
+
+    <button
+        type="button"
+        class="menu-toggle"
+        id="menuToggle"
+        aria-label="Open menu"
+        aria-expanded="false"
+    >
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div
+        class="dashboard-menu"
+        id="dashboardMenu"
+    >
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="#features">
+            Features
+        </a>
+
+        <a href="#how-it-works">
+            How It Works
+        </a>
+
+        <a href="#testimonials">
+            Testimonials
+        </a>
+
+        <div class="menu-divider"></div>
+
+        <a
+            href="/login"
+            class="home-login-btn"
+        >
+            Login
+        </a>
+
+        <a
+            href="/register"
+            class="home-register-btn"
+        >
+            Register
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- =====================================================
+     HERO SECTION
+===================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div class="badge">
+
+        ● SRI LANKA'S PREMIER AI WEDDING PLANNER
+
+    </div>
+
+
+    <h1>
+
+        Your Dream Wedding,<br>
+
+        <span>
+            Perfected by AI.
+        </span>
+
+    </h1>
+
+
+    <p>
+
+        Experience intelligent budget optimization and
+        personalized vendor matchmaking,
+        tailored for Sri Lankan celebrations.
+
+    </p>
+
+
+    <div class="buttons">
+
+
+        <a href="/register">
+
+            <button
+                type="button"
+                class="start"
+            >
+                Start Planning Free
+            </button>
+
+        </a>
+
+
+        <button
+            type="button"
+            class="how"
+            onclick="document.getElementById('how-it-works').scrollIntoView({ behavior: 'smooth' })"
+        >
+            See How It Works →
+        </button>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     HERO IMAGE
+===================================================== -->
+
+<div class="hero-image">
+
+    <img
+        src="{{ url_for('static', filename='images/wedplan.jpg') }}"
+        alt="Wedding celebration"
+    >
+
+</div>
+
+
+<br>
+
+
+
+<!-- =====================================================
+     ABOUT SECTION
+===================================================== -->
+
+<section class="about">
+
+
+    <p class="about-subtitle">
+        ABOUT WEDPLAN SMART
+    </p>
+
+
+    <h1>
+        A wedding planner who never sleeps.
+    </h1>
+
+
+    <p class="about-description">
+
+        WedPlan Smart combines a curated database of Sri Lankan
+        venues, caterers and photographers with a Random Forest
+        recommendation engine. Tell us your budget, guest count
+        and preferred location — we'll engineer the most suitable
+        wedding package that respects every rupee.
+
+    </p>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURES SECTION
+===================================================== -->
+
+<section
+    class="features"
+    id="features"
+>
+
+
+    <h1 class="section-title">
+
+        Features built for Sri Lankan weddings
+
+    </h1>
+
+
+    <div class="feature-grid">
+
+
+        <!-- FEATURE 1 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ✦
+            </div>
+
+            <h2>
+                AI Vendor Matching
+            </h2>
+
+            <p>
+
+                Random Forest predicts vendor suitability
+                from price, rating, capacity and location.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 2 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                💰
+            </div>
+
+            <h2>
+                Budget Optimization
+            </h2>
+
+            <p>
+
+                Stay within budget while maximizing
+                quality and value.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 3 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                📊
+            </div>
+
+            <h2>
+                Live Budget Analytics
+            </h2>
+
+            <p>
+
+                Visualize your wedding expenses
+                with interactive charts.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 4 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🍽
+            </div>
+
+            <h2>
+                Smart Catering
+            </h2>
+
+            <p>
+
+                Catering costs automatically adjust
+                based on guest count.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 5 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🏛
+            </div>
+
+            <h2>
+                Vendor Library
+            </h2>
+
+            <p>
+
+                Explore trusted Sri Lankan venues,
+                caterers and photographers.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- FEATURE 6 -->
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ⚙
+            </div>
+
+            <h2>
+                Admin Dashboard
+            </h2>
+
+            <p>
+
+                Easily manage vendors, bookings
+                and recommendations.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CULTURE SECTION
+===================================================== -->
+
+<section class="culture-section">
+
+
+    <p class="culture-label">
+
+        ONE ISLAND · EVERY TRADITION
+
+    </p>
+
+
+    <h1 class="culture-heading">
+
+        Crafted for <span>every faith</span> & culture.
+
+    </h1>
+
+
+    <p class="culture-description">
+
+        WedPlan Smart welcomes couples of every belief and
+        background. Whether you envision a sacred poruwa,
+        a grand mandap, candlelit cathedral vows, a serene
+        Nikah, or any other cherished tradition — our AI finds
+        vendors who honor your rituals, respect your customs,
+        and celebrate your love story.
+
+    </p>
+
+</section>
+
+
+
+<!-- =====================================================
+     CULTURE GALLERY
+===================================================== -->
+
+<div class="culture-gallery">
+
+    <img
+        src="{{ url_for('static', filename='images/Hindu.png') }}"
+        alt="Hindu Wedding"
+    >
+
+    <img
+        src="{{ url_for('static', filename='images/Christianity.png') }}"
+        alt="Christian Wedding"
+    >
+
+    <img
+        src="{{ url_for('static', filename='images/Buddhist.png') }}"
+        alt="Buddhist Wedding"
+    >
+
+    <img
+        src="{{ url_for('static', filename='images/Muslim.png') }}"
+        alt="Muslim Wedding"
+    >
+
+</div>
+
+<p class="culture-footer">
+    Inter-faith celebration? Our AI blends vendors across traditions seamlessly.
+</p>
+
+
+<!-- =====================================================
+     HOW IT WORKS
+===================================================== -->
+
+<section
+    id="how-it-works"
+    class="how-section"
+>
+
+
+    <p class="section-label">
+        HOW IT WORKS
+    </p>
+
+
+    <h1 class="section-heading">
+
+        Plan Your Wedding in Four Simple Steps
+
+    </h1>
+
+
+    <div class="steps-grid">
+
+
+        <!-- STEP 01 -->
+
+        <div class="step-card">
+
+            <span>
+                01
+            </span>
+
+            <h3>
+                Set Your Budget
+            </h3>
+
+            <p>
+
+                Enter your total wedding budget
+                in Sri Lankan Rupees.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STEP 02 -->
+
+        <div class="step-card">
+
+            <span>
+                02
+            </span>
+
+            <h3>
+                Tell Us More
+            </h3>
+
+            <p>
+
+                Provide guest count, location
+                and wedding style.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STEP 03 -->
+
+        <div class="step-card">
+
+            <span>
+                03
+            </span>
+
+            <h3>
+                AI Recommends
+            </h3>
+
+            <p>
+
+                Random Forest evaluates vendors
+                based on suitability.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- STEP 04 -->
+
+        <div class="step-card">
+
+            <span>
+                04
+            </span>
+
+            <h3>
+                Receive Your Package
+            </h3>
+
+            <p>
+
+                View your optimized wedding
+                package instantly.
+
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TESTIMONIALS
+===================================================== -->
+
+<section
+    class="testimonial-section"
+    id="testimonials"
+>
+
+
+    <p class="testimonial-label">
+        TESTIMONIALS
+    </p>
+
+
+    <h1 class="testimonial-title">
+
+        Loved by Sri Lankan Couples
+
+    </h1>
+
+
+    <div class="testimonial-grid">
+
+
+        <!-- TESTIMONIAL 1 -->
+
+        <div class="testimonial-card">
+
+
+            <div class="testimonial-quote">
+                “
+            </div>
+
+
+            <p>
+
+                WedPlan Smart saved us weeks of vendor
+                comparison. The optimized package stayed
+                within our budget.
+
+            </p>
+
+
+            <h3>
+                Dilani &amp; Sahan
+            </h3>
+
+
+            <span>
+                Colombo
+            </span>
+
+
+        </div>
+
+
+
+        <!-- TESTIMONIAL 2 -->
+
+        <div class="testimonial-card">
+
+
+            <div class="testimonial-quote">
+                “
+            </div>
+
+
+            <p>
+
+                The AI recommendations perfectly matched
+                our traditional Kandyan ceremony.
+
+            </p>
+
+
+            <h3>
+                Nethmi &amp; Tharindu
+            </h3>
+
+
+            <span>
+                Kandy
+            </span>
+
+
+        </div>
+
+
+
+        <!-- TESTIMONIAL 3 -->
+
+        <div class="testimonial-card">
+
+
+            <div class="testimonial-quote">
+                “
+            </div>
+
+
+            <p>
+
+                The budget breakdown made it easy for our
+                families to understand where every rupee
+                was allocated.
+
+            </p>
+
+
+            <h3>
+                Anushka &amp; Roshan
+            </h3>
+
+
+            <span>
+                Galle
+            </span>
+
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CALL TO ACTION
+===================================================== -->
+
+<section class="cta">
+
+
+    <div class="cta-box">
+
+
+        <h1>
+
+            Plan your wedding with
+            <br>
+            precision.
+
+        </h1>
+
+
+        <p>
+
+            Free to try. No card required.
+
+        </p>
+
+
+        <a href="/register">
+
+            <button
+                type="button"
+                class="cta-btn"
+            >
+                Create Your Free Account
+            </button>
+
+        </a>
+
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+        <!-- BRAND -->
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+            <p class="footer-description">
+                Sri Lanka's AI-powered wedding budget and vendor
+                recommendation platform. Built to make grand
+                celebrations achievable, within budget.
+            </p>
+
+        </div>
+
+
+        <!-- QUICK LINKS -->
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+            <a href="#how-it-works">
+                How it works
+            </a>
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#contact">
+                Contact
+            </a>
+
+        </div>
+
+
+        <!-- CONTACT -->
+        <div class="footer-column" id="contact">
+
+            <h3>
+                CONTACT
+            </h3>
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- COPYRIGHT -->
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     MAIN JAVASCRIPT
+===================================================== -->
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | WedPlan Smart</title>
+
+    <!-- GOOGLE FONTS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- MAIN CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}?v=6.0"
+    >
+
+</head>
+
+
+<body class="wed-dashboard-page">
+
+
+<!-- =====================================================
+     DASHBOARD NAVBAR
+===================================================== -->
+
+<nav class="dashboard-nav">
+
+    <!-- LOGO -->
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan <span>Smart</span>
+        </h2>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div class="dashboard-menu-wrapper">
+
+        <!-- MOBILE MENU BUTTON -->
+
+        <button
+            type="button"
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+        <!-- DASHBOARD DROPDOWN -->
+
+        <div
+            class="dashboard-dropdown"
+            id="dashboardDropdown"
+        >
+
+            <!-- GREETING -->
+
+            <p class="menu-greeting">
+                Hi, {{ session.get('fullname', 'User') }}
+            </p>
+
+
+            <!-- DASHBOARD ONLY -->
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+
+            <!-- DIVIDER -->
+
+            <div class="menu-divider"></div>
+
+
+            <!-- LOGOUT -->
+
+            <a
+                href="/logout"
+                class="logout-link"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN DASHBOARD
+===================================================== -->
+
+<main class="dashboard-main">
+
+
+    <!-- =================================================
+         WELCOME
+    ================================================== -->
+
+    <section class="welcome-banner">
+
+        <p class="welcome-small">
+            WELCOME BACK
+        </p>
+
+
+        <h1>
+
+            Hello,
+            {{ session.get('fullname', 'User') }}
+            — let's plan
+
+            <br>
+
+            your day.
+
+        </h1>
+
+
+        <p class="welcome-description">
+
+            Enter your wedding details below.
+
+            Our AI will generate an optimized
+            package within seconds.
+
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WEDDING BRIEF
+    ================================================== -->
+
+    <section class="wedding-brief-card">
+
+        <h2>
+            Your Wedding Brief
+        </h2>
+
+
+        <form
+            action="/dashboard"
+            method="POST"
+        >
+
+
+            <!-- =================================================
+                 TOTAL BUDGET
+            ================================================== -->
+
+            <div class="brief-field">
+
+                <label for="budget">
+                    Total Budget (LKR)
+                </label>
+
+
+                <input
+                    type="number"
+                    id="budget"
+                    name="budget"
+                    placeholder="Example: 1500000"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GUEST COUNT
+            ================================================== -->
+
+            <div class="brief-field">
+
+                <label for="guest_count">
+                    Guest Count
+                </label>
+
+
+                <input
+                    type="number"
+                    id="guest_count"
+                    name="guest_count"
+                    placeholder="Example: 250"
+                    min="1"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- =================================================
+                 LOCATION
+            ================================================== -->
+
+            <div class="brief-field">
+
+                <label for="location">
+                    Preferred Location
+                </label>
+
+
+                <select
+                    id="location"
+                    name="location"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Location
+                    </option>
+
+
+                    <option value="Colombo">
+                        Colombo
+                    </option>
+
+
+                    <option value="Kandy">
+                        Kandy
+                    </option>
+
+
+                    <option value="Galle">
+                        Galle
+                    </option>
+
+
+                    <option value="Negombo">
+                        Negombo
+                    </option>
+
+
+                    <option value="Kurunegala">
+                        Kurunegala
+                    </option>
+
+
+                    <option value="Nuwara Eliya">
+                        Nuwara Eliya
+                    </option>
+
+
+                    <option value="Gampaha">
+                        Gampaha
+                    </option>
+
+
+                    <option value="Kalutara">
+                        Kalutara
+                    </option>
+
+
+                    <option value="Matara">
+                        Matara
+                    </option>
+
+
+                    <option value="Bentota">
+                        Bentota
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 WEDDING STYLE
+            ================================================== -->
+
+            <div class="brief-field">
+
+                <label for="wedding_style">
+                    Wedding Style
+                </label>
+
+
+                <select
+                    id="wedding_style"
+                    name="wedding_style"
+                    required
+                >
+
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Select Wedding Style
+                    </option>
+
+
+                    <option value="Traditional">
+                        Traditional
+                    </option>
+
+
+                    <option value="Modern">
+                        Modern
+                    </option>
+
+
+                    <option value="Luxury">
+                        Luxury
+                    </option>
+
+
+                    <option value="Garden">
+                        Garden
+                    </option>
+
+
+                    <option value="Beach">
+                        Beach
+                    </option>
+
+                </select>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SERVICES
+            ================================================== -->
+
+            <div class="brief-field">
+
+                <label>
+                    Select Required Services
+                </label>
+
+
+                <!-- SERVICE ERROR -->
+
+                <div
+                    id="serviceError"
+                    class="service-error"
+                    style="display:none;"
+                >
+
+                    ⚠ Please select at least one wedding service.
+
+                </div>
+
+
+                <!-- SERVICE OPTIONS -->
+
+                <div class="service-options">
+
+
+                    <!-- VENUE -->
+
+                    <label class="service-option">
+
+                        <input
+                            type="checkbox"
+                            name="services"
+                            value="Venue"
+                        >
+
+                        <span>
+                            Venue
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- CATERING -->
+
+                    <label class="service-option">
+
+                        <input
+                            type="checkbox"
+                            name="services"
+                            value="Catering"
+                        >
+
+                        <span>
+                            Catering
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- PHOTOGRAPHY -->
+
+                    <label class="service-option">
+
+                        <input
+                            type="checkbox"
+                            name="services"
+                            value="Photography"
+                        >
+
+                        <span>
+                            Photography
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- VIDEOGRAPHY -->
+
+                    <label class="service-option">
+
+                        <input
+                            type="checkbox"
+                            name="services"
+                            value="Videography"
+                        >
+
+                        <span>
+                            Videography
+                        </span>
+
+                    </label>
+
+
+
+                    <!-- DECORATION -->
+
+                    <label class="service-option">
+
+                        <input
+                            type="checkbox"
+                            name="services"
+                            value="Decoration"
+                        >
+
+                        <span>
+                            Decoration
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 GENERATE BUTTON
+            ================================================== -->
+
+            <button
+                type="submit"
+                class="dashboard-generate-btn"
+            >
+
+                Generate Wedding Plan →
+
+            </button>
+
+
+        </form>
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script
+    src="{{ url_for('static', filename='js/main.js') }}">
+</script>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+
+            <p class="footer-description">
+
+                Sri Lanka's AI-powered wedding budget and vendor
+                recommendation platform. Built to make grand
+                celebrations achievable, within budget.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- QUICK LINKS -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+
+            <a href="#how-it-works">
+                How it works
+            </a>
+
+
+            <a href="#features">
+                Features
+            </a>
+
+
+            <a href="#contact">
+                Contact
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTACT -->
+
+        <div
+            class="footer-column"
+            id="contact"
+        >
+
+            <h3>
+                CONTACT
+            </h3>
+
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- COPYRIGHT -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     DASHBOARD MENU JAVASCRIPT
+===================================================== -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const menuToggle =
+        document.getElementById("menuToggle");
+
+    const dashboardDropdown =
+        document.getElementById("dashboardDropdown");
+
+
+    /* SAFETY CHECK */
+
+    if (!menuToggle || !dashboardDropdown) {
+        return;
+    }
+
+
+    /* OPEN / CLOSE MENU */
+
+    menuToggle.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+
+        const isOpen =
+            dashboardDropdown.classList.toggle("show");
+
+
+        menuToggle.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+
+    });
+
+
+
+    /* CLOSE WHEN CLICKING OUTSIDE */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !dashboardDropdown.contains(event.target) &&
+            !menuToggle.contains(event.target)
+        ) {
+
+            dashboardDropdown.classList.remove("show");
+
+
+            menuToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+</body>
+</html>

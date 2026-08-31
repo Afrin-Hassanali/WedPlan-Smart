@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | WedPlan Smart</title>
+
+    <!-- GOOGLE FONTS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <!-- MAIN CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}?v=6.1"
+    >
+
+</head>
+
+
+<body class="register-page">
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="auth-nav register-auth-nav">
+
+    <div class="logo">
+
+        <div class="circle">
+            W
+        </div>
+
+        <h2>
+            WedPlan <span>Smart</span>
+        </h2>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     REGISTER SECTION
+===================================================== -->
+
+<section class="modern-register">
+
+
+    <!-- =================================================
+         LEFT IMAGE
+    ================================================== -->
+
+    <div class="register-image">
+
+        <img
+            src="{{ url_for('static', filename='images/Register_Wedding.png') }}"
+            alt="Elegant wedding planning"
+        >
+
+        <div class="register-image-text">
+
+            <p>
+                START YOUR JOURNEY
+            </p>
+
+            <h2>
+                Plan your dream wedding beautifully.
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         RIGHT FORM
+    ================================================== -->
+
+    <div class="register-content">
+
+        <div class="register-form-wrapper">
+
+
+            <p class="register-label">
+                CREATE ACCOUNT
+            </p>
+
+
+            <h1>
+                Begin Your Wedding Journey
+            </h1>
+
+
+            <p class="register-subtitle">
+                Create your account and start planning
+                in under a minute.
+            </p>
+
+
+
+            <!-- =================================================
+                 REGISTER FORM
+            ================================================= -->
+
+            <form
+                action="/register"
+                method="POST"
+                onsubmit="return validateRegisterForm()"
+            >
+
+
+                <!-- =================================================
+                     FULL NAME
+                ================================================= -->
+
+                <div class="register-input-group">
+
+                    <input
+                        type="text"
+                        id="fullname"
+                        name="fullname"
+                        placeholder=" "
+                        required
+                        minlength="2"
+                        maxlength="100"
+                        autocomplete="name"
+                    >
+
+                    <label for="fullname">
+                        Full Name
+                    </label>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     EMAIL
+                ================================================= -->
+
+                <div class="register-input-group">
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder=" "
+                        required
+                        autocomplete="email"
+                        pattern="[a-z0-9._%+-]+@gmail\.com"
+                        title="Please enter a valid Gmail address ending with @gmail.com"
+                        oninput="this.value = this.value.toLowerCase()"
+                    >
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PASSWORD
+                ================================================= -->
+
+                <div class="register-input-group password-group">
+
+                    <input
+                        type="password"
+                        id="register-password"
+                        name="password"
+                        placeholder=" "
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                    >
+
+                    <label for="register-password">
+                        Password
+                    </label>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('register-password', this)"
+                        aria-label="Show password"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CONFIRM PASSWORD
+                ================================================= -->
+
+                <div class="register-input-group password-group">
+
+                    <input
+                        type="password"
+                        id="confirm-password"
+                        name="confirm_password"
+                        placeholder=" "
+                        required
+                        minlength="6"
+                        autocomplete="new-password"
+                    >
+
+                    <label for="confirm-password">
+                        Confirm Password
+                    </label>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword('confirm-password', this)"
+                        aria-label="Show password"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     REGISTER BUTTON
+                ================================================= -->
+
+                <button
+                    type="submit"
+                    class="modern-register-btn"
+                >
+                    Create Your Free Account
+                </button>
+
+
+            </form>
+
+
+
+            <!-- =================================================
+                 SIGN IN
+            ================================================= -->
+
+            <p class="signin-text">
+
+                Already have an account?
+
+                <a href="/login">
+                    Sign In
+                </a>
+
+            </p>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+    <div class="footer-container">
+
+
+        <!-- =================================================
+             BRAND
+        ================================================= -->
+
+        <div class="footer-brand">
+
+            <div class="footer-logo">
+
+                <div class="circle">
+                    W
+                </div>
+
+                <h2>
+                    WedPlan <span>Smart</span>
+                </h2>
+
+            </div>
+
+
+            <p class="footer-description">
+
+                Sri Lanka's AI-powered wedding budget and vendor
+                recommendation platform. Built to make grand
+                celebrations achievable, within budget.
+
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             QUICK LINKS
+        ================================================= -->
+
+        <div class="footer-column">
+
+            <h3>
+                QUICK LINKS
+            </h3>
+
+
+            <a href="/#how-it-works">
+                How it works
+            </a>
+
+
+            <a href="/#features">
+                Features
+            </a>
+
+
+            <a href="/#contact">
+                Contact
+            </a>
+
+        </div>
+
+
+
+        <!-- =================================================
+             CONTACT
+        ================================================= -->
+
+        <div
+            class="footer-column"
+            id="contact"
+        >
+
+            <h3>
+                CONTACT
+            </h3>
+
+
+            <p>
+                Colombo 03, Sri Lanka
+            </p>
+
+
+            <p>
+                WedPlan.lk
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =================================================
+         COPYRIGHT
+    ================================================= -->
+
+    <div class="footer-bottom">
+
+        <p>
+            © 2026 WedPlan Smart. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     PASSWORD TOGGLE
+===================================================== -->
+
+<script>
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+
+    if (!input) {
+        return;
+    }
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "🙈";
+
+        button.setAttribute(
+            "aria-label",
+            "Hide password"
+        );
+
+    } else {
+
+        input.type = "password";
+
+        button.textContent = "👁";
+
+        button.setAttribute(
+            "aria-label",
+            "Show password"
+        );
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>
